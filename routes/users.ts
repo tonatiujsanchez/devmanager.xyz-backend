@@ -1,11 +1,15 @@
 
 import { Router } from 'express'
-import { registerUser } from '../controllers/users'
+import { register, login, confirm } from '../controllers/users'
 
 const router = Router()
 
 
-router.post('/', registerUser)
+router.post('/', register)
+
+router.post('/login', login)
+
+router.get('/confirm/:token', confirm)
 
 
 

@@ -36,6 +36,7 @@ const UserSchema = new Schema({
     timestamps: true
 })
 
+
 UserSchema.pre('save', async function( next ) {
 
     if( !this.isModified('password') ){
@@ -46,6 +47,10 @@ UserSchema.pre('save', async function( next ) {
     this.password = await bcrypt.hash( this.password, salt )
 
 })
+
+UserSchema.methods.checkPassword = async function( passwordBody:string ):Promise<boolean> {
+    return await bcrypt.compare( passwordBody, this.password )
+}
 
 const User:Model<IUser> = models.User || model('User', UserSchema)
 
