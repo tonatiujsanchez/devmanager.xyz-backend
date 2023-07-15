@@ -1,4 +1,4 @@
-
+import { Request } from "express"
 
 export interface IUser {
     _id?     : string
@@ -16,4 +16,8 @@ export interface IUser {
 
 
     checkPassword: ( password:string ) => Promise<boolean>
+}
+
+export interface CustomRequest extends Request {
+    user: IUser
 }
