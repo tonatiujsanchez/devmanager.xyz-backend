@@ -1,7 +1,7 @@
 import express, { Application } from "express"
 
 import { dbConnection } from '../config/db'
-import { usersRoutes } from "../routes"
+import { projectsRoutes, usersRoutes } from "../routes"
 
 
 class Server {
@@ -9,7 +9,8 @@ class Server {
     private app: Application
     private port: string
     private paths = {
-        user: '/api/users'
+        users: '/api/users',
+        projects: '/api/projects',
     }
 
     constructor() {
@@ -44,7 +45,8 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.paths.user, usersRoutes)
+        this.app.use(this.paths.users, usersRoutes)
+        this.app.use(this.paths.projects, projectsRoutes)
         
         this.app.use('/hola', (req, res) => {
             res.send('Hola mundo!! 👾')
