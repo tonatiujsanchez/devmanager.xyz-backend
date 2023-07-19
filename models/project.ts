@@ -31,6 +31,12 @@ const ProjectSchema = new Schema({
             ref: 'User'
         }
     ],
+    // tasks: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'Task'
+    //     }
+    // ],
     status: {
         type: Boolean,
         default: true
@@ -39,6 +45,11 @@ const ProjectSchema = new Schema({
     timestamps: true
 })
 
+
+ProjectSchema.methods.toJSON = function(){
+    const { __v, status, ...project } = this.toObject()
+    return project
+}
 
 const Project:Model<IProject> = models.Project || model('Project', ProjectSchema)
 

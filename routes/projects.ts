@@ -11,7 +11,7 @@ import {
     addCollaboratorToproject, 
     deleteCollaboratorFromproject, 
 } from '../controllers/project'
-import { checkAuth } from '../middlewares'
+import { checkAuth, esMongoId } from '../middlewares'
 
 const router = Router()
 
@@ -21,9 +21,9 @@ router.route('/')
     .post(checkAuth, newProject)
 
 router.route('/:id')
-    .get(checkAuth, getProject)
-    .put(checkAuth, editProject)
-    .delete(checkAuth, deleteProject)
+    .get(checkAuth, esMongoId, getProject)
+    .put(checkAuth, esMongoId, editProject)
+    .delete(checkAuth, esMongoId, deleteProject)
 
 router.get('/tasks/:id', checkAuth, getTasksFromProject)
 

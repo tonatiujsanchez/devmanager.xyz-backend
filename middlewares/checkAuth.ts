@@ -20,12 +20,6 @@ export const checkAuth = async( req:Request, res:Response, next:NextFunction ) =
         })
     }
 
-    if( !token ) {
-        return res.status(400).json({
-            msg: 'Token no válido'
-        })
-    }
-
     try {
 
         token = token.split(' ')[1]
