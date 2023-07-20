@@ -1,8 +1,6 @@
 import { Request, Response } from "express"
 import { CustomRequest } from "../interfaces"
 import { Project } from "../models"
-import { isValidObjectId } from "mongoose"
-
 
 
 export const getProjects = async( req: Request, res: Response ) => {

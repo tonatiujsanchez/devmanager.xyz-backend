@@ -1,6 +1,7 @@
 import { Model, Schema, models, model } from 'mongoose'
 import { IProject } from '../interfaces'
 
+
 const ProjectSchema = new Schema({
     name: {
         type: String,

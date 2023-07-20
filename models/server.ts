@@ -1,7 +1,7 @@
 import express, { Application } from "express"
 
 import { dbConnection } from '../config/db'
-import { projectsRoutes, usersRoutes } from "../routes"
+import { projectsRoutes, usersRoutes, tasksRoutes } from "../routes"
 
 
 class Server {
@@ -11,6 +11,7 @@ class Server {
     private paths = {
         users: '/api/users',
         projects: '/api/projects',
+        tasks: '/api/tasks',
     }
 
     constructor() {
@@ -47,6 +48,7 @@ class Server {
     routes() {
         this.app.use(this.paths.users, usersRoutes)
         this.app.use(this.paths.projects, projectsRoutes)
+        this.app.use(this.paths.tasks, tasksRoutes)
         
         this.app.use('/hola', (req, res) => {
             res.send('Hola mundo!! 👾')

@@ -10,7 +10,7 @@ import {
     getTasksFromProject, 
     addCollaboratorToproject, 
     deleteCollaboratorFromproject, 
-} from '../controllers/project'
+} from '../controllers/projects'
 import { checkAuth, esMongoId } from '../middlewares'
 
 const router = Router()

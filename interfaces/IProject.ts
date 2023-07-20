@@ -2,13 +2,13 @@ import { IUser } from "./IUser"
 
 
 export interface IProject {
-    _id?     : string
+    _id?         : string
 
     name         : string
     description  : string
     deliveryDate : Date
     client       : string
-    creator      : IUser | string,
+    creator      : IUser | string
     collaborators: IUser[] | string[]
 
     // task: ITask[] | string[]
