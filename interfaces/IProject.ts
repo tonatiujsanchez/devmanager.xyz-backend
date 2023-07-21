@@ -11,8 +11,6 @@ export interface IProject {
     creator      : IUser | string
     collaborators: IUser[] | string[]
 
-    // task: ITask[] | string[]
-
     status       : boolean
 
     createdAt?: string

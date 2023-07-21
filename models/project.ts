@@ -24,7 +24,8 @@ const ProjectSchema = new Schema({
     },
     creator: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     collaborators: [
         {
@@ -32,12 +33,6 @@ const ProjectSchema = new Schema({
             ref: 'User'
         }
     ],
-    // tasks: [
-    //     {
-    //         type: Schema.Types.ObjectId,
-    //         ref: 'Task'
-    //     }
-    // ],
     status: {
         type: Boolean,
         default: true

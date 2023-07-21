@@ -1,5 +1,5 @@
 import { Model, Schema, model, models } from "mongoose"
-import { ITaks } from "../interfaces"
+import { ITask } from "../interfaces"
 
 
 const TaskSchema = new Schema({
@@ -19,16 +19,19 @@ const TaskSchema = new Schema({
     },
     deliveryDate: {
         type: Date,
+        required: true,
         default: Date.now()
     },
     priority: {
         type: String,
         required: true,
-        enum: ['low', 'medium', 'high']
+        enum: ['low', 'medium', 'high'],
+        default: 'medium'
     },
     project: {
         type: Schema.Types.ObjectId,
-        ref: 'Project'
+        ref: 'Project',
+        required: true
     },
     status: {
         type: Boolean,
@@ -38,7 +41,12 @@ const TaskSchema = new Schema({
     timestamps: true
 })
 
+TaskSchema.methods.toJSON = function(){
+    const { __v, status, ...task } = this.toObject()
+    return task
+}
 
-const Task:Model<ITaks> = models.Task || model('Task', TaskSchema)
+
+const Task:Model<ITask> = models.Task || model('Task', TaskSchema)
 
 export default Task

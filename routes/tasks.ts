@@ -7,13 +7,13 @@ import {
     deleteTask, 
     completeTask, 
 } from '../controllers/tasks'
-import { checkAuth, esMongoId } from '../middlewares'
+import { checkAuth, esMongoId, existsProjectById } from '../middlewares'
 
 
 const router = Router()
 
 
-router.post('/', checkAuth, newTask)
+router.post('/', checkAuth, existsProjectById, newTask)
 
 router.route('/:id')
     .get(checkAuth, esMongoId, getTask)

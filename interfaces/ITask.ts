@@ -1,7 +1,7 @@
 import { IProject } from "./IProject"
 
 
-export interface ITaks {
+export interface ITask {
     _id?        : string
 
     name        : string

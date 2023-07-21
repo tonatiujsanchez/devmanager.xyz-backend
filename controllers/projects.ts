@@ -70,39 +70,41 @@ export const getProjects = async( req: Request, res: Response ) => {
 
 export const newProject = async( req: Request, res: Response ) => {
     
+    // TODO: deliveryDate :: propiedad por añadir
+
     const { name='', description='', client='' } = req.body
     const { user } = req as CustomRequest
 
     if(name.trim() === ''){
-        return res.status(404).json({
+        return res.status(400).json({
             msg: 'El nombre del proyecto es requerido'
         })
     }
 
     if(description.trim() === ''){
-        return res.status(404).json({
+        return res.status(400).json({
             msg: 'La descripción del proyecto es requerido'
         })
     }
 
     if(client.trim() === ''){
-        return res.status(404).json({
+        return res.status(400).json({
             msg: 'El cliente del proyecto es requerido'
         })
     }
 
     try {
 
-        const proyect = new Project({
+        const project = new Project({
             name, 
             description, 
             client,
             creator: user._id
         })
 
-        await proyect.save()
+        await project.save()
         
-        return res.status(201).json(proyect)
+        return res.status(201).json(project)
     } catch (error) {
         
         console.log(error)
@@ -121,22 +123,22 @@ export const getProject = async( req: Request, res: Response ) => {
 
     try {
 
-        const proyect = await Project.findById(id)
+        const project = await Project.findById(id)
             .where('status').equals(true)
 
-        if( !proyect ){
+        if( !project ){
             return res.status(404).json({
                 msg: 'Proyecto no encontrado'
             })
         }
 
-        if( !(user._id?.toString() === proyect.creator.toString()) ){
+        if( !(user._id?.toString() === project.creator.toString()) ){
             return res.status(401).json({
                 msg: 'Proyecto no encontrado'
             })
         }
         
-        return res.status(200).json(proyect)
+        return res.status(200).json(project)
     } catch (error) {
 
         console.log(error)
@@ -155,30 +157,32 @@ export const editProject = async( req: Request, res: Response ) => {
     const { id } = req.params
 
     try {
+
+        // TODO: Validar que <<deliveryDate>> sea una fecha válida en caso de recirla
         
-        const proyect = await Project.findById(id)
+        const project = await Project.findById(id)
             .where('status').equals(true)
 
-        if( !proyect ){
+        if( !project ){
             return res.status(404).json({
                 msg: 'Proyecto no encontrado'
             })
         }
 
-        if( !(user._id?.toString() === proyect.creator.toString()) ){
+        if( !(user._id?.toString() === project.creator.toString()) ){
             return res.status(401).json({
                 msg: 'Proyecto no encontrado'
             })
         }
 
-        proyect.name         = name.trim() === '' ? proyect.name : name
-        proyect.description  = description.trim() === '' ? proyect.description : description
-        proyect.deliveryDate = deliveryDate.trim() === '' ? proyect.deliveryDate : deliveryDate
-        proyect.client       = client.trim() === '' ? proyect.client : client
+        project.name         = name.trim() === '' ? project.name : name
+        project.description  = description.trim() === '' ? project.description : description
+        project.deliveryDate = deliveryDate.trim() === '' ? project.deliveryDate : deliveryDate
+        project.client       = client.trim() === '' ? project.client : client
 
-        await proyect.save()
+        await project.save()
 
-        return res.status(200).json(proyect)
+        return res.status(200).json(project)
 
     } catch (error) {
 
@@ -196,25 +200,25 @@ export const deleteProject = async( req: Request, res: Response ) => {
     const { id } = req.params
 
     try {
-        const proyect = await Project.findById(id)
+        const project = await Project.findById(id)
             .where('status').equals(true)
 
-        if( !proyect ){
+        if( !project ){
             return res.status(404).json({
                 msg: 'Proyecto no encontrado'
             })
         }
 
-        if( !(user._id?.toString() === proyect.creator.toString()) ){
+        if( !(user._id?.toString() === project.creator.toString()) ){
             return res.status(401).json({
                 msg: 'Proyecto no encontrado'
             })
         }
 
-        proyect.status = false
-        await proyect.save()
+        project.status = false
+        await project.save()
 
-        return res.status(200).json(proyect)
+        return res.status(200).json(project)
 
     } catch (error) {
         console.log(error)
