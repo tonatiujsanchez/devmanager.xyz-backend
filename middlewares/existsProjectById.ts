@@ -8,8 +8,18 @@ import { CustomRequest } from "../interfaces"
 
 export const existsProjectById = async( req: Request, res: Response, next: NextFunction ) => {
 
-    const { project:idProject } = req.body
     const { user } = req as CustomRequest
+
+    const { id:idParams } = req.params 
+    const { project:idBody } = req.body
+    
+    let idProject = ''
+
+    if( idParams ){
+        idProject = idParams
+    }else {
+        idProject = idBody
+    }
 
     if( !isValidObjectId(idProject) ){
         return res.status(404).json({

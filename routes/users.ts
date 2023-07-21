@@ -15,8 +15,6 @@ router.get('/confirm/:token', confirmAccount)
 
 router.post('/change-password/', changePassword)
 
-// router.get('/change-password/:token', checkPasswordToken)
-// router.post('/change-password/:token', newPassword)
 router.route('/change-password/:token')
     .get(checkPasswordToken)
     .post(newPassword)
