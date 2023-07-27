@@ -24,6 +24,22 @@ const UserSchema = new Schema({
     token: {
         type: String
     },
+    facebook: {
+        type: Boolean,
+        default: false
+    },
+    google: {
+        type: Boolean,
+        default: false
+    },
+    twitter: {
+        type: Boolean,
+        default: false
+    },
+    github: {
+        type: Boolean,
+        default: false
+    },
     confirmed: {
         type: Boolean,
         default: false
@@ -51,6 +67,12 @@ UserSchema.pre('save', async function( next ) {
 UserSchema.methods.checkPassword = async function( passwordBody:string ):Promise<boolean> {
     return await bcrypt.compare( passwordBody, this.password )
 }
+
+UserSchema.methods.toJSON = function() {
+    const { __v, status, ...user } = this.toObject()
+    return user
+}
+
 
 const User:Model<IUser> = models.User || model('User', UserSchema)
 

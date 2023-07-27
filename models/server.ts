@@ -1,5 +1,7 @@
 import express, { Application } from "express"
 
+import cors from 'cors'
+
 import { dbConnection } from '../config/db'
 import { projectsRoutes, usersRoutes, tasksRoutes } from "../routes"
 
@@ -36,7 +38,7 @@ class Server {
 
     middlewares() {
         // CORS
-        // this.app.use( cors() )
+        this.app.use( cors() )
 
         // Body parser
         this.app.use( express.json() )

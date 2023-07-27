@@ -8,6 +8,11 @@ export interface IUser {
     email    : string
     token?   : string | null
 
+    facebook : boolean
+    google   : boolean
+    twitter  : boolean
+    github   : boolean
+
     confirmed: boolean
     status   : boolean
 
