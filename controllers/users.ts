@@ -1,9 +1,8 @@
 import { Request, Response } from "express"
 
 import { User } from "../models"
-import { generateId, generateJWT } from "../helpers"
+import { emailRegister, generateId, generateJWT } from "../helpers"
 import { CustomRequest } from "../interfaces"
-
 
 
 export const register = async( req:Request, res: Response )=>{
@@ -52,6 +51,13 @@ export const register = async( req:Request, res: Response )=>{
         })
 
         await user.save()
+
+        
+        emailRegister({
+            email: user.email, 
+            name: user.name, 
+            token: user.token!
+        })
 
         return res.status(200).json({
             _id: user._id,
