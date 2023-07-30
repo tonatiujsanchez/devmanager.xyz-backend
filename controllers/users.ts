@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 
 import { User } from "../models"
-import { emailRegister, generateId, generateJWT } from "../helpers"
+import { sendEmailForgotPassword, sendEmailRegister, generateId, generateJWT } from "../helpers"
 import { CustomRequest } from "../interfaces"
 
 
@@ -29,17 +29,17 @@ export const register = async( req:Request, res: Response )=>{
 
     try {
 
-        const userDB = await User.findOne({ email }).lean()
+        const userDB = await User.findOne({ email: email.toLowerCase() }).lean()
 
         if( userDB && userDB.status ){
             return res.status(400).json({
-                msg: `Ya hay un usuario registrado con el correro: ${ email }`
+                msg: `El correo ${ userDB.email } ya esta en uso`
             })
         }
 
         if( userDB && !userDB.status ){
             return res.status(400).json({
-                msg: `Usuario registrado pero eliminado, hable con el administrador`
+                msg: `Usuario bloqueado, hable con el administrador`
             })
         }             
 
@@ -53,7 +53,7 @@ export const register = async( req:Request, res: Response )=>{
         await user.save()
 
         
-        emailRegister({
+        sendEmailRegister({
             email: user.email, 
             name: user.name, 
             token: user.token!
@@ -69,7 +69,7 @@ export const register = async( req:Request, res: Response )=>{
 
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
         
     }
@@ -94,7 +94,7 @@ export const login = async( req:Request, res: Response ) => {
 
     try {
 
-        const user = await User.findOne({ email, status: true })
+        const user = await User.findOne({ email: email.toLowerCase(), status: true })
 
         if( !user ){
             return res.status(404).json({
@@ -130,7 +130,7 @@ export const login = async( req:Request, res: Response ) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
     }
 }
@@ -168,7 +168,7 @@ export const confirmAccount = async( req:Request, res:Response ) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
     }
 }
@@ -185,7 +185,7 @@ export const changePassword = async( req: Request, res:Response ) => {
     }
 
     try {
-        const user = await User.findOne({ email, status: true })
+        const user = await User.findOne({ email:email.toLowerCase(), status: true })
 
         if( !user ){
             return res.status(404).json({
@@ -198,19 +198,24 @@ export const changePassword = async( req: Request, res:Response ) => {
                 msg: 'Tu cuenta no a sido confirmada'
             })
         }
-
+        
         user.token = generateId()
-
         await user.save()
 
+        sendEmailForgotPassword({
+            email: user.email, 
+            name: user.name, 
+            token: user.token
+        })
+
         return res.status(200).json({
-            msg: `Enviamos un correo a ${ user.email } con las instruciones`
+            msg: `Enviamos un correo a ${ user.email } con las instruciones para restablecer tu contraseña`
         })
 
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
     }
 
@@ -245,7 +250,7 @@ export const checkPasswordToken = async( req: Request, res: Response ) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
     }
 
@@ -291,7 +296,7 @@ export const newPassword = async( req: Request, res: Response ) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
     }
 }
