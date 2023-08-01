@@ -238,12 +238,12 @@ export const checkPasswordToken = async( req: Request, res: Response ) => {
 
         if( !user ){
             return res.status(404).json({
-                msg: 'Token no valido'
+                msg: 'Token no válido'
             })
         }
         
         return res.status(200).json({
-            msg: 'TOKEN VALIDO'
+            msg: 'TOKEN VÁLIDO'
         })
 
         
@@ -290,7 +290,7 @@ export const newPassword = async( req: Request, res: Response ) => {
         await user.save()
 
         return res.status(200).json({
-            msg: 'Contraseña actualizada correctamente',
+            msg: 'Su contraseña a sido actualizada correctamente',
         })
         
     } catch (error) {
