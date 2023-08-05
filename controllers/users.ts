@@ -302,15 +302,19 @@ export const newPassword = async( req: Request, res: Response ) => {
 }
 
 
-export const perfil = async( req: Request, res: Response ) => {
+export const getPerfil = async( req: Request, res: Response ) => {
 
     const { user } = req as CustomRequest
     
+    const token = generateJWT(user._id!)
+
     return res.status(200).json({
-        user: {
+        user:{
             _id: user._id,
             name: user.name,
             email: user.email
-        }        
+        },
+        token
     })
+
 }

@@ -1,6 +1,6 @@
 
 import { Router } from 'express'
-import { register, login, confirmAccount, changePassword, checkPasswordToken, newPassword, perfil } from '../controllers/users'
+import { register, login, confirmAccount, changePassword, checkPasswordToken, newPassword, getPerfil } from '../controllers/users'
 import { checkAuth } from '../middlewares'
 
 
@@ -19,7 +19,7 @@ router.route('/change-password/:token')
     .get(checkPasswordToken)
     .post(newPassword)
 
-router.get('/perfil', checkAuth, perfil)
+router.get('/perfil', checkAuth, getPerfil)
 
 
 export default router
