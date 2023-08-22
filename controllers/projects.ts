@@ -44,6 +44,7 @@ export const getProjects = async( req: Request, res: Response ) => {
                     .where('creator').equals(user)
                     .skip(skip)
                     .limit(limit)
+                    .sort({ createdAt: 'desc' })
                     .lean(),
                 Project.countDocuments(query)
                     .where('creator').equals(user)
@@ -61,7 +62,7 @@ export const getProjects = async( req: Request, res: Response ) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
     }
 
@@ -70,9 +71,7 @@ export const getProjects = async( req: Request, res: Response ) => {
 
 export const newProject = async( req: Request, res: Response ) => {
     
-    // TODO: deliveryDate :: propiedad por añadir
-
-    const { name='', description='', client='' } = req.body
+    const { name='', description='', deliveryDate, client='' } = req.body
     const { user } = req as CustomRequest
 
     if(name.trim() === ''){
@@ -97,7 +96,8 @@ export const newProject = async( req: Request, res: Response ) => {
 
         const project = new Project({
             name, 
-            description, 
+            description,
+            deliveryDate,
             client,
             creator: user._id
         })
@@ -109,7 +109,7 @@ export const newProject = async( req: Request, res: Response ) => {
         
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
         
     }
@@ -144,7 +144,7 @@ export const getProject = async( req: Request, res: Response ) => {
 
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
         
     }
@@ -159,8 +159,6 @@ export const editProject = async( req: Request, res: Response ) => {
 
     try {
 
-        // TODO: Validar que <<deliveryDate>> sea una fecha válida en caso de recirla
-        
         const project = await Project.findById(id)
             .where('status').equals(true)
 
@@ -189,7 +187,7 @@ export const editProject = async( req: Request, res: Response ) => {
 
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
 
     }
@@ -224,7 +222,7 @@ export const deleteProject = async( req: Request, res: Response ) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
     }
 
@@ -301,7 +299,7 @@ export const getTasksFromProject = async( req: Request, res: Response ) => {
     } catch (error) {
         console.log(error)
         return res.status(500).json({
-            msg: 'Error en el servidor, hable con el adminstrador'
+            msg: 'Error en el servidor, hable con el administrador'
         })
     }
 

@@ -7,9 +7,7 @@ import { CustomRequest, IProject } from "../interfaces"
 
 export const newTask = async( req: Request, res: Response ) => {
 
-    // TODO: deliveryDate :: propiedad por añadir
-
-    const { name = '', description = '', priority=undefined, project } = req.body
+    const { name = '', description = '', deliveryDate, priority=undefined, project } = req.body
 
     if(name.trim() === ''){
         return res.status(400).json({
@@ -33,7 +31,8 @@ export const newTask = async( req: Request, res: Response ) => {
     
         const task = new Task({
             name, 
-            description, 
+            description,
+            deliveryDate,
             priority,
             project
         })
@@ -88,12 +87,10 @@ export const getTask = async( req: Request, res: Response ) => {
 export const editTask = async( req: Request, res: Response ) => {
 
     const { user } = req as CustomRequest
-    const { name = '', description = '', priority=undefined, deliveryDate='' } = req.body
+    const { name = '', description = '', deliveryDate='', priority=undefined } = req.body
     const { id } = req.params
 
     try {
-
-        // TODO: Validar que <<deliveryDate>> sea una fecha válida en caso de recirla
 
         if( priority && !TASKS_CONSTANTS.validPriority.includes( priority.toString() ) ){
             return res.status(400).json({

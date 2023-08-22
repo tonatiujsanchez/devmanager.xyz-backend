@@ -104,7 +104,7 @@ export const login = async( req:Request, res: Response ) => {
 
         if( !user.confirmed ){
             return res.status(403).json({
-                msg: 'Tu cuenta no a sido confirmada'
+                msg: 'Tu cuenta no a sido confirmada, revisa tu correo'
             })
         }
 

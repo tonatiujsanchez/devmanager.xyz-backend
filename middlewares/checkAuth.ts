@@ -8,7 +8,7 @@ import { CustomRequest } from "../interfaces"
 
 export const checkAuth = async( req:Request, res:Response, next:NextFunction ) => {
     
-    let token = req.headers.authorization
+    let token = req.headers.authorization    
     
     if( !process.env.JWT_SECRET_KEY ){
         throw new Error('JWT_SECRET_KEY requerida - Revisar variables de entorno')
