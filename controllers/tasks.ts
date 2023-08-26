@@ -152,8 +152,7 @@ export const deleteTask = async( req: Request, res: Response ) => {
             return res.status(403).json('Tarea no encontrada - No autorizado')
         }
 
-        task.status = false
-        await task.save()
+        await task.deleteOne()
             
         return res.status(200).json(task)
         
