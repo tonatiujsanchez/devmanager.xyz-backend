@@ -3,7 +3,7 @@ import express, { Application } from "express"
 import cors from 'cors'
 
 import { dbConnection } from '../config/db'
-import { projectsRoutes, usersRoutes, tasksRoutes } from "../routes"
+import { projectsRoutes, usersRoutes, tasksRoutes, collaboratorsRoutes } from "../routes"
 
 
 class Server {
@@ -11,9 +11,10 @@ class Server {
     private app: Application
     private port: string
     private paths = {
-        users: '/api/users',
+        users   : '/api/users',
         projects: '/api/projects',
-        tasks: '/api/tasks',
+        tasks   : '/api/tasks',
+        collaborators: '/api/collaborators',
     }
 
     constructor() {
@@ -51,6 +52,7 @@ class Server {
         this.app.use(this.paths.users, usersRoutes)
         this.app.use(this.paths.projects, projectsRoutes)
         this.app.use(this.paths.tasks, tasksRoutes)
+        this.app.use(this.paths.collaborators, collaboratorsRoutes)
         
         this.app.use('/hola', (req, res) => {
             res.send('Hola mundo!! 👾')

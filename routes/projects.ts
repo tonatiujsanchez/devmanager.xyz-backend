@@ -7,9 +7,7 @@ import {
     getProject, 
     editProject, 
     deleteProject, 
-    getTasksFromProject, 
-    addCollaboratorToproject, 
-    deleteCollaboratorFromproject, 
+    getTasksFromProject,
 } from '../controllers/projects'
 import { checkAuth, esMongoId, existsProjectById } from '../middlewares'
 
@@ -26,9 +24,6 @@ router.route('/:id')
     .delete(checkAuth, esMongoId, deleteProject)
 
 router.get('/tasks/:id', checkAuth, existsProjectById, getTasksFromProject)
-
-router.post('add-collaborator', checkAuth, addCollaboratorToproject)
-router.post('delete-collaborator', checkAuth, deleteCollaboratorFromproject)
 
 
 export default router

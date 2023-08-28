@@ -229,18 +229,6 @@ export const deleteProject = async( req: Request, res: Response ) => {
   
 }
 
-export const addCollaboratorToproject = async( req: Request, res: Response ) => {
-    return res.status(200).json({
-        msg: 'addCollaboratorToproject Controller'
-    })
-}
-
-export const deleteCollaboratorFromproject = async( req: Request, res: Response ) => {
-    return res.status(200).json({
-        msg: 'deleteCollaboratorFromproject Controller'
-    })
-}
-
 export const getTasksFromProject = async( req: Request, res: Response ) => {
 
     const { id } = req.params
