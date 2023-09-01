@@ -42,6 +42,7 @@ export const getProjects = async( req: Request, res: Response ) => {
         const [ projects, total ] = await Promise.all([
                 Project.find(query)
                     .where('creator').equals(user)
+                    .populate('collaborators', 'name email photo')
                     .skip(skip)
                     .limit(limit)
                     .sort({ createdAt: 'desc' })
@@ -124,6 +125,7 @@ export const getProject = async( req: Request, res: Response ) => {
     try {
 
         const project = await Project.findById(id)
+            .populate('collaborators', 'name email photo')
             .where('status').equals(true)
 
         if( !project ){

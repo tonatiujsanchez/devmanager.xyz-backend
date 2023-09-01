@@ -6,13 +6,13 @@ import {
     deleteCollaboratorFromproject, 
     searchCollaboratorByEmail 
 } from '../controllers/collaborators'
-import { checkAuth } from '../middlewares'
+import { checkAuth, esMongoId } from '../middlewares'
 
 const router = Router()
 
 
 router.post('/', checkAuth, searchCollaboratorByEmail)
-router.post('/:id', checkAuth, addCollaboratorToproject)
+router.post('/:id', checkAuth, esMongoId, addCollaboratorToproject)
 router.delete('/:id', checkAuth, deleteCollaboratorFromproject)
 
 export default router

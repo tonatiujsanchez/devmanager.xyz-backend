@@ -33,6 +33,12 @@ export const checkAuth = async( req:Request, res:Response, next:NextFunction ) =
                 msg: 'No autorizado - Usuario no encontrado'
             })
         }
+
+        if( !user.confirmed ){
+            return res.status(403).json({
+                msg: 'No autorizado - Cuenta no confirmada'
+            })
+        }
         
         if( !user.status ){
             return res.status(401).json({
