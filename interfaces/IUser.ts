@@ -6,6 +6,8 @@ export interface IUser {
     name     : string
     password : string
     email    : string
+    photo?   : string
+    
     token?   : string | null
 
     facebook : boolean

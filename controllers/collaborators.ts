@@ -125,14 +125,18 @@ export const addCollaboratorToproject = async( req: Request, res: Response ) => 
             })
         }
 
-        const newProject = await Project.findOneAndUpdate(
+        await Project.findOneAndUpdate(
             { _id: project._id }, 
             { collaborators:[...project.collaborators, collaborator] }, 
             { new: true }
-        ).populate('collaborators', 'name email photo')
-
- 
-        return res.status(200).json(newProject)
+        )
+        
+        return res.status(200).json({
+            _id  : collaborator._id,
+            name : collaborator.name,
+            email: collaborator.email,
+            photo: collaborator.photo
+        })
         
     } catch (error) {
         console.log(error)
