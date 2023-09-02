@@ -149,7 +149,58 @@ export const addCollaboratorToproject = async( req: Request, res: Response ) => 
 
 
 export const deleteCollaboratorFromproject = async( req: Request, res: Response ) => {
-    return res.status(200).json({
-        msg: 'deleteCollaboratorFromproject Controller'
-    })
+
+    const { id } = req.params
+    const { idCollaborator } = req.body
+
+    console.log({idCollaborator})
+    
+    const { user } = req as CustomRequest
+
+    if( !isValidObjectId(idCollaborator) ){
+        return res.status(400).json({
+            msg: 'Id de colaborador no válido'
+        })
+    }
+    
+    try {
+        
+        const project = await Project.findById(id)
+            .where('status').equals(true)
+        
+        if( !project ){
+            return res.status(404).json({
+                msg: 'Proyecto no encontrado'
+            })
+        }
+
+        // Comprobar que el usuario autenticado sea el creador del proyecto 
+        if( user._id?.toString() !== project.creator.toString() ){
+            return res.status(401).json({
+                msg: 'Proyecto no encontrado'
+            })
+        }
+
+        // Comprobar que el colaborador pertenezca al proyecto
+        const findCollaborator = (project.collaborators as string[]).find( collaboratorDB => collaboratorDB.toString() === idCollaborator )
+        if( !findCollaborator ){
+            return res.status(401).json({
+                msg: 'Colaborador no encontrado en este proyecto'
+            })
+        }
+
+        await Project.findOneAndUpdate(
+            { _id: project._id }, 
+            { collaborators: (project.collaborators as string[]).filter( collaboratorDB => collaboratorDB.toString() !== idCollaborator  ) }, 
+            { new: true }
+        )
+
+        return res.status(200).json({ idCollaborator })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            msg: 'Error en el servidor, hable con el administrador'
+        })
+    }
+
 }
