@@ -35,10 +35,19 @@ export const getProjects = async( req: Request, res: Response ) => {
     const skip = ( pageNum - 1 ) * countNum
     const limit = countNum
      
-    const query = { status: true }
+    // const query = { 
+    //     status: true,
+    //     '$or': [
+    //         { 'collaborators': { $in: user } },
+    //         { 'creator': { $in: user } },
+    //     ]
+    // }
+
+    const query = { 
+        status: true
+    }
 
     try {
-
         const [ projects, total ] = await Promise.all([
                 Project.find(query)
                     .where('creator').equals(user)
@@ -67,6 +76,72 @@ export const getProjects = async( req: Request, res: Response ) => {
         })
     }
 
+}
+
+export const getCollaborativeProjects = async( req: Request, res: Response ) => {
+
+    const { user } = req as CustomRequest
+    const { page = 1, count = 10 } = req.query
+
+
+    let pageNum = Number(page)
+    let countNum = Number(count)
+
+    if( isNaN(pageNum) ){
+        return res.status(400).json({
+            msg: 'Las propiedad page debe ser un número'
+        })
+    }
+
+    if( isNaN(countNum) ){
+        return res.status(400).json({
+            msg: 'Las propiedad limit debe ser un número'
+        })
+    }
+    
+    if( pageNum <= 0 ){ 
+        pageNum = 1 
+    }
+
+    if( countNum <= 0 ){ 
+        countNum = 10 
+    }
+
+    const skip = ( pageNum - 1 ) * countNum
+    const limit = countNum
+     
+    const query = { 
+        status: true,
+        '$or': [
+            { 'collaborators': { $in: user } },
+        ]
+    }
+
+    try {
+        const [ projects, total ] = await Promise.all([
+                Project.find(query)
+                    .populate('collaborators', 'name email photo')
+                    .skip(skip)
+                    .limit(limit)
+                    .sort({ createdAt: 'desc' })
+                    .lean(),
+                Project.countDocuments(query)                    
+        ]) 
+        
+        return res.status(200).json({
+            page: pageNum,
+            count: projects.length,
+            total,
+            totalPages: Math.ceil(total / countNum),
+            projects
+        })
+    
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            msg: 'Error en el servidor, hable con el administrador'
+        })
+    }
 
 }
 

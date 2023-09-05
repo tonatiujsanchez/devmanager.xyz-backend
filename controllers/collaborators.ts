@@ -153,8 +153,6 @@ export const deleteCollaboratorFromproject = async( req: Request, res: Response 
     const { id } = req.params
     const { idCollaborator } = req.body
 
-    console.log({idCollaborator})
-    
     const { user } = req as CustomRequest
 
     if( !isValidObjectId(idCollaborator) ){

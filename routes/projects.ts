@@ -2,7 +2,8 @@
 import { Router } from 'express'
 
 import { 
-    getProjects, 
+    getProjects,
+    getCollaborativeProjects, 
     newProject, 
     getProject, 
     editProject, 
@@ -17,6 +18,8 @@ const router = Router()
 router.route('/')
     .get(checkAuth, getProjects)
     .post(checkAuth, newProject)
+
+router.get('/collaborative', checkAuth, getCollaborativeProjects)
 
 router.route('/:id')
     .get(checkAuth, esMongoId, getProject)
