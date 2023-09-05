@@ -1,4 +1,5 @@
 import { Request } from "express"
+import { IProject } from "./IProject"
 
 export interface IUser {
     _id?     : string
@@ -27,4 +28,5 @@ export interface IUser {
 
 export interface CustomRequest extends Request {
     user: IUser
+    project: IProject
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { CustomRequest } from "../interfaces"
+import { CustomRequest, IUser } from "../interfaces"
 import { Project, Task } from "../models"
 
 
@@ -209,7 +209,10 @@ export const getProject = async( req: Request, res: Response ) => {
             })
         }
 
-        if( !(user._id?.toString() === project.creator.toString()) ){
+        // Comprobar que el colaborador no pertenezca al proyecto
+        const findCollaborator = (project.collaborators as IUser[]).find( collaboratorDB => collaboratorDB._id?.toString() === user._id!.toString() )
+
+        if( !(user._id?.toString() === project.creator.toString()) && !findCollaborator ){
             return res.status(401).json({
                 msg: 'Proyecto no encontrado'
             })

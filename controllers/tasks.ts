@@ -7,6 +7,15 @@ import { CustomRequest, IProject } from "../interfaces"
 
 export const newTask = async( req: Request, res: Response ) => {
 
+    const { user, project:projectReq } = req as CustomRequest
+
+    // Validar que el creador del proyecto sea el mismo que intenta crear una tarea
+    if( user._id?.toString() !== projectReq.creator?.toString() ){
+        return res.status(400).json({
+            msg: 'Proyecto no encontrado - No autorizado!!!'
+        })
+    }
+
     const { name = '', description = '', deliveryDate, priority=undefined, project } = req.body
 
     if(name.trim() === ''){
@@ -68,6 +77,7 @@ export const getTask = async( req: Request, res: Response ) => {
             })
         }
 
+        // Validar que el creador del proyecto sea el mismo que intenta obtener una tarea
         if( user._id?.toString() !== (task.project as IProject).creator.toString() ){
             return res.status(403).json('Tarea no encontrada - No autorizado')
         }
@@ -107,9 +117,12 @@ export const editTask = async( req: Request, res: Response ) => {
                 msg: 'Tarea no encontrada'
             })
         }
-
+        
+        // Validar que el creador del proyecto sea el mismo que intenta actualizar una tarea
         if( user._id?.toString() !== (task.project as IProject).creator.toString() ){
-            return res.status(403).json('Tarea no encontrada - No autorizado')
+            return res.status(403).json({
+                msg: 'Tarea no encontrada - No autorizado'
+            })
         }
 
         task.name        = name.trim() === '' ? task.name : name
@@ -148,6 +161,7 @@ export const deleteTask = async( req: Request, res: Response ) => {
             })
         }
 
+        // Validar que el creador del proyecto sea el mismo que intenta eliminar una tarea
         if( user._id?.toString() !== (task.project as IProject).creator.toString() ){
             return res.status(403).json('Tarea no encontrada - No autorizado')
         }

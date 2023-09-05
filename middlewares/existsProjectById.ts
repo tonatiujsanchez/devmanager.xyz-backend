@@ -31,19 +31,21 @@ export const existsProjectById = async( req: Request, res: Response, next: NextF
 
         const project = await Project.findById(idProject)
             .where('status').equals(true)
-
+        
         if( !project ){
             return res.status(404).json({
                 msg: 'Proyecto no encontrado'
             })
         }
         
-        if( user._id?.toString() !== project.creator.toString() ){
+        if( user._id?.toString() !== project.creator.toString() && !(project.collaborators as string[]).includes( user._id! ) ){
             return res.status(401).json({
                 msg: 'Proyecto no encontrado - No autorizado'
             })
         }
     
+        (req as CustomRequest).project = project
+
         next()
         
     } catch (error) {
