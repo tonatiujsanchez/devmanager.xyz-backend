@@ -58,7 +58,7 @@ export const searchCollaboratorByEmail = async( req: Request, res: Response ) =>
 
 
 
-export const addCollaboratorToproject = async( req: Request, res: Response ) => {
+export const addCollaboratorToProject = async( req: Request, res: Response ) => {
 
     const { id } = req.params
     const { idCollaborator } = req.body

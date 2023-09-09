@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 
 import { Task } from "../models"
 import { TASKS_CONSTANTS } from "../config/constants"
-import { CustomRequest, IProject } from "../interfaces"
+import { CustomRequest, IProject, IUser } from "../interfaces"
 
 
 export const newTask = async( req: Request, res: Response ) => {
@@ -182,11 +182,37 @@ export const deleteTask = async( req: Request, res: Response ) => {
 
 export const completeTask = async( req: Request, res: Response ) => {
 
+    const { user } = req as CustomRequest
+    const { id } = req.params
+
     try {
+
+        const task = await Task.findById(id)
+            .where('status').equals(true)
+            .populate('project', 'creator collaborators')
+
+        if( !task ){
+            return res.status(404).json({
+                msg: 'Tarea no encontrada'
+            })
+        }
+
+        // Comprobar que el colaborador no pertenezca al proyecto
+        const { project } = task as { project: IProject }
+        const findCollaborator = project.collaborators.find( IdCollaborator => IdCollaborator.toString() === user._id!.toString() )
+
+
+        if( user._id?.toString() !== project.creator.toString() && !findCollaborator ){
+            return res.status(401).json({
+                msg: 'Proyecto no encontrado - Acción no válida'
+            })
+        }
+
+        task.completed = !task.completed
+
+        await task.save()
             
-        return res.status(200).json({
-            msg: 'completeTask - Controller'
-        })
+        return res.status(200).json(task)
         
     } catch (error) {
         console.log(error)

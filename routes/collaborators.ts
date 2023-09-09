@@ -2,7 +2,7 @@
 import { Router } from 'express'
 
 import { 
-    addCollaboratorToproject, 
+    addCollaboratorToProject, 
     deleteCollaboratorFromproject, 
     searchCollaboratorByEmail 
 } from '../controllers/collaborators'
@@ -12,7 +12,7 @@ const router = Router()
 
 
 router.post('/', checkAuth, searchCollaboratorByEmail)
-router.post('/:id', checkAuth, esMongoId, addCollaboratorToproject)
+router.post('/:id', checkAuth, esMongoId, addCollaboratorToProject)
 router.delete('/:id', checkAuth, deleteCollaboratorFromproject)
 
 export default router
