@@ -1,4 +1,5 @@
 import { IProject } from "./IProject"
+import { IUser } from "./IUser"
 
 
 export interface ITask {
@@ -10,6 +11,7 @@ export interface ITask {
     deliveryDate: Date
     priority    : PriorityTask
     project     : IProject | string
+    completedBy?: IUser | string
 
     status      : boolean
 

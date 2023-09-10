@@ -70,6 +70,7 @@ export const getTask = async( req: Request, res: Response ) => {
         const task = await Task.findById(id)
             .where('status').equals(true)
             .populate('project', 'name creator')
+            .populate('completedBy', 'name email photo')
 
         if( !task ){
             return res.status(404).json({
@@ -111,6 +112,7 @@ export const editTask = async( req: Request, res: Response ) => {
         const task = await Task.findById(id)
             .where('status').equals(true)
             .populate('project', 'name creator')
+            .populate('completedBy', 'name email photo')
 
         if( !task ){
             return res.status(404).json({
@@ -199,7 +201,7 @@ export const completeTask = async( req: Request, res: Response ) => {
 
         // Comprobar que el colaborador no pertenezca al proyecto
         const { project } = task as { project: IProject }
-        const findCollaborator = project.collaborators.find( IdCollaborator => IdCollaborator.toString() === user._id!.toString() )
+        const findCollaborator = (project.collaborators as string[]).find( IdCollaborator => IdCollaborator.toString() === user._id!.toString() )
 
 
         if( user._id?.toString() !== project.creator.toString() && !findCollaborator ){
@@ -210,9 +212,14 @@ export const completeTask = async( req: Request, res: Response ) => {
 
         task.completed = !task.completed
 
-        await task.save()
+
+        const newTask = await Task.findOneAndUpdate(
+            { _id: task._id }, 
+            { completed: task.completed, completedBy: task.completed ? user : null }, 
+            { new: true }
+        ).populate('completedBy', 'name email photo')
             
-        return res.status(200).json(task)
+        return res.status(200).json(newTask)
         
     } catch (error) {
         console.log(error)

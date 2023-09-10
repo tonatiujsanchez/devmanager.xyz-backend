@@ -33,6 +33,11 @@ const TaskSchema = new Schema({
         ref: 'Project',
         required: true
     },
+    completedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
+    },
     status: {
         type: Boolean,
         default: true

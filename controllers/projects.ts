@@ -348,6 +348,7 @@ export const getTasksFromProject = async( req: Request, res: Response ) => {
         const [ tasks, total ] = await Promise.all([
             Task.find(query)
                 .where('project').equals(id)
+                .populate('completedBy', 'name email photo')
                 .skip(skip)
                 .limit(limit)
                 .lean(),
