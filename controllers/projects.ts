@@ -345,7 +345,7 @@ export const getTasksFromProject = async( req: Request, res: Response ) => {
 
     try {
 
-        const [ tasks, total ] = await Promise.all([
+        const [ tasks, total, completedTasks ] = await Promise.all([
             Task.find(query)
                 .where('project').equals(id)
                 .populate('completedBy', 'name email photo')
@@ -353,6 +353,8 @@ export const getTasksFromProject = async( req: Request, res: Response ) => {
                 .limit(limit)
                 .lean(),
             Task.countDocuments(query)
+                .where('project').equals(id),
+            Task.countDocuments({...query, completed: true})
                 .where('project').equals(id)
                 
         ]) 
@@ -362,7 +364,8 @@ export const getTasksFromProject = async( req: Request, res: Response ) => {
             count: tasks.length,
             total,
             totalPages: Math.ceil(total / countNum),
-            tasks
+            tasks,
+            completedTasks
         })
 
     } catch (error) {
