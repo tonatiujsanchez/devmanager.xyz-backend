@@ -304,10 +304,52 @@ export const deleteProject = async( req: Request, res: Response ) => {
         return res.status(500).json({
             msg: 'Error en el servidor, hable con el administrador'
         })
+    } 
+}
+
+
+
+export const searchProjects = async(req: Request, res: Response) => {
+
+    const { searchTerm='' } = req.body
+    const { user } = req as CustomRequest
+
+    if( searchTerm.trim() === '' ){
+        return res.status(404).json({
+            msg: 'El termino de busqueda es requerido'
+        })
     }
 
-  
+    try {
+        const projects = await Project.find({
+            status: true, 
+            $and: [
+                {
+                    $or: [
+                        { collaborators: { $in: user } },
+                        { creator: { $in: user } },
+                    ]
+                },
+                {
+                    $or: [
+                        { name: { $regex: new RegExp(searchTerm, "i") } },
+                        { description: { $regex: new RegExp(searchTerm, "i") } },
+                    ] 
+                }
+            ]
+        }).lean()
+
+        return res.status(200).json(projects)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            msg: 'Error en el servidor, hable con el administrador'
+        })
+    }
+
 }
+
+
 
 export const getTasksFromProject = async( req: Request, res: Response ) => {
 

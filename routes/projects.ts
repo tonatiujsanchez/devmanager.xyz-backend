@@ -7,7 +7,8 @@ import {
     newProject, 
     getProject, 
     editProject, 
-    deleteProject, 
+    deleteProject,
+    searchProjects,
     getTasksFromProject,
 } from '../controllers/projects'
 import { checkAuth, esMongoId, existsProjectById } from '../middlewares'
@@ -22,10 +23,11 @@ router.route('/')
 router.get('/collaborative', checkAuth, getCollaborativeProjects)
 
 router.route('/:id')
-    .get(checkAuth, esMongoId, getProject)
-    .put(checkAuth, esMongoId, editProject)
-    .delete(checkAuth, esMongoId, deleteProject)
+.get(checkAuth, esMongoId, getProject)
+.put(checkAuth, esMongoId, editProject)
+.delete(checkAuth, esMongoId, deleteProject)
 
+router.post('/search', checkAuth, searchProjects)
 router.get('/tasks/:id', checkAuth, existsProjectById, getTasksFromProject)
 
 
