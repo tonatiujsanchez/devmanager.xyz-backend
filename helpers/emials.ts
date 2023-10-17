@@ -14,18 +14,18 @@ export const sendEmailRegister = async( data: { email:string, name:string, token
 
     // Info Email
     const info = await transport.sendMail({
-        from: 'UpTask <admin@uptask.com>',
+        from: 'DevDo <admin@devdo.com>',
         to: data.email,
-        subject: 'Confirma tu cuenta de UpTask',
-        text: 'Estas a un paso de administras tus proyectos en UpTask',
+        subject: 'Confirma tu cuenta de DevDo',
+        text: 'Estas a un paso de administras tus proyectos en DevDo',
         html:`<body style="font-family: Arial, sans-serif; background-color: #f1f1f1; margin-top: 20px; padding: 0;">
             <table style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
                 <tr>
                     <td style="padding: 30px; text-align: center;">
-                        <img src="https://tarea.co/wp-content/uploads/2020/04/logo.png" alt="UpTask Logo" style="max-width: 150px;">
-                        <h2 style="color: #0F172A; margin-top: 20px;">¡Bienvenido a UpTask!</h2>
+                        <img src="https://tarea.co/wp-content/uploads/2020/04/logo.png" alt="DevDo Logo" style="max-width: 150px;">
+                        <h2 style="color: #0F172A; margin-top: 20px;">¡Bienvenido a DevDo!</h2>
                         <p style="color: #333; font-size: 16px; margin-top: 20px; line-height: 1.6;">
-                            Hola, ${ data.name }! Gracias por registrarte en UpTask. Para comenzar a utilizar nuestra plataforma,
+                            Hola, ${ data.name }! Gracias por registrarte en DevDo. Para comenzar a utilizar nuestra plataforma,
                             necesitamos confirmar tu cuenta. Haz clic en el botón de abajo para activarla:
                         </p>
                         <a href="${ process.env.FRONTEND_URL }/confirmar-cuenta/${ data.token }" style="display: inline-block; background-color: #0F172A; color: #ffffff; text-decoration: none; font-size: 16px; padding: 12px 24px; border-radius: 5px; margin-top: 30px;">
@@ -36,8 +36,8 @@ export const sendEmailRegister = async( data: { email:string, name:string, token
                             ${ process.env.FRONTEND_URL }/confirmar-cuenta/${ data.token }
                         </p>
                         <p style="color: #333; font-size: 16px; margin-top: 30px;">Si tu no creaste esta cuenta, puedes simplemente ignorar este mensaje.</p>
-                        <p style="color: #333; font-size: 16px; margin-top: 30px;">¡Esperamos que disfrutes de la experiencia con UpTask!</p>
-                        <p style="color: #333; font-size: 16px;">El equipo de UpTask</p>
+                        <p style="color: #333; font-size: 16px; margin-top: 30px;">¡Esperamos que disfrutes de la experiencia con DevDo!</p>
+                        <p style="color: #333; font-size: 16px;">El equipo de DevDo</p>
                     </td>
                 </tr>
             </table>
@@ -61,18 +61,18 @@ export const sendEmailForgotPassword = async( data: { email:string, name:string,
 
     // Info Email
     const info = await transport.sendMail({
-        from: 'UpTask <admin@uptask.com>',
+        from: 'DevDo <admin@devdo.com>',
         to: data.email,
-        subject: 'Restablece tu Contraseña de UpTask',
-        text: 'Estas a un paso de restablece tu contraseña de UpTask',
+        subject: 'Restablece tu Contraseña de DevDo',
+        text: 'Estas a un paso de restablece tu contraseña de DevDo',
         html:`<body style="font-family: Arial, sans-serif; background-color: #f1f1f1; margin-top: 20px; padding: 0;">
             <table style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
                 <tr>
                     <td style="padding: 30px; text-align: center;">
-                        <img src="https://tarea.co/wp-content/uploads/2020/04/logo.png" alt="UpTask Logo" style="max-width: 150px;">
+                        <img src="https://tarea.co/wp-content/uploads/2020/04/logo.png" alt="DevDo Logo" style="max-width: 150px;">
                         <h2 style="color: #0F172A; margin-top: 20px;">Restablece tu Contraseña</h2>
                         <p style="color: #333; font-size: 16px; margin-top: 20px; line-height: 1.6;">
-                            Hola, ${ data.name }! ¿Olvidaste tu contraseña de UpTask? ¡No te preocupes! Haz clic en el botón de abajo para restablecer tu contraseña:
+                            Hola, ${ data.name }! ¿Olvidaste tu contraseña de DevDo? ¡No te preocupes! Haz clic en el botón de abajo para restablecer tu contraseña:
                         </p>
                         <a href="${ process.env.FRONTEND_URL }/olvide-password/${ data.token }" style="display: inline-block; background-color: #0F172A; color: #ffffff; text-decoration: none; font-size: 16px; padding: 12px 24px; border-radius: 5px; margin-top: 30px;">
                             Restablecer Contraseña
@@ -82,7 +82,7 @@ export const sendEmailForgotPassword = async( data: { email:string, name:string,
                             ${ process.env.FRONTEND_URL }/olvide-password/${ data.token }
                         </p>
                         <p style="color: #333; font-size: 16px; margin-top: 30px;">Si tú no solicitaste restablecer tu contraseña, puedes simplemente ignorar este mensaje.</p>
-                        <p style="color: #333; font-size: 16px;">El equipo de UpTask</p>
+                        <p style="color: #333; font-size: 16px;">El equipo de DevDo</p>
                     </td>
                 </tr>
             </table>
