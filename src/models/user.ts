@@ -21,6 +21,10 @@ const UserSchema = new Schema({
         trim: true,
         unique: true
     },
+    photo: { 
+        type: String,
+        default: null,
+    },
     token: {
         type: String
     },

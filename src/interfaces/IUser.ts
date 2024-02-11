@@ -7,7 +7,7 @@ export interface IUser {
     name     : string
     password : string
     email    : string
-    photo?   : string
+    photo    : string | null
     
     token?   : string | null
 
