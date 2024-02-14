@@ -33,12 +33,12 @@ export const sendEmailRegister = async( data: { email:string, name:string, token
                             Hola, ${ data.name }! Gracias por registrarte en DevManager. Para comenzar a utilizar nuestra plataforma,
                             necesitamos confirmar tu cuenta. Haz clic en el botón de abajo para activarla:
                         </p>
-                        <a href="${ process.env.FRONTEND_URL }/confirmar-cuenta/${ data.token }" style="display: inline-block; background-color: #0F172A; color: #ffffff; text-decoration: none; font-size: 16px; padding: 12px 24px; border-radius: 5px; margin-top: 30px;">
+                        <a href="${ process.env.FRONTEND_URL }/auth/confirmar-cuenta/${ data.token }" style="display: inline-block; background-color: #0F172A; color: #ffffff; text-decoration: none; font-size: 16px; padding: 12px 24px; border-radius: 5px; margin-top: 30px;">
                             Confirmar Cuenta
                         </a>
                         <p style="color: #666; font-size: 14px; margin-top: 30px;">Si tienes algún problema con el botón, copia y pega el siguiente enlace en tu navegador:</p>
                         <p style="color: #007BFF; font-size: 14px; word-wrap: break-word;">
-                            ${ process.env.FRONTEND_URL }/confirmar-cuenta/${ data.token }
+                            ${ process.env.FRONTEND_URL }/auth/confirmar-cuenta/${ data.token }
                         </p>
                         <p style="color: #333; font-size: 16px; margin-top: 30px;">Si tu no creaste esta cuenta, puedes simplemente ignorar este mensaje.</p>
                         <p style="color: #333; font-size: 16px; margin-top: 30px;">¡Esperamos que disfrutes de la experiencia con DevManager!</p>
@@ -83,12 +83,12 @@ export const sendEmailForgotPassword = async( data: { email:string, name:string,
                         <p style="color: #333; font-size: 16px; margin-top: 20px; line-height: 1.6;">
                             Hola, ${ data.name }! ¿Olvidaste tu contraseña de DevManager? ¡No te preocupes! Haz clic en el botón de abajo para restablecer tu contraseña:
                         </p>
-                        <a href="${ process.env.FRONTEND_URL }/olvide-password/${ data.token }" style="display: inline-block; background-color: #0F172A; color: #ffffff; text-decoration: none; font-size: 16px; padding: 12px 24px; border-radius: 5px; margin-top: 30px;">
+                        <a href="${ process.env.FRONTEND_URL }/auth/olvide-password/${ data.token }" style="display: inline-block; background-color: #0F172A; color: #ffffff; text-decoration: none; font-size: 16px; padding: 12px 24px; border-radius: 5px; margin-top: 30px;">
                             Restablecer Contraseña
                         </a>
                         <p style="color: #666; font-size: 14px; margin-top: 30px;">Si tienes algún problema con el botón, copia y pega el siguiente enlace en tu navegador:</p>
                         <p style="color: #007BFF; font-size: 14px; word-wrap: break-word;">
-                            ${ process.env.FRONTEND_URL }/olvide-password/${ data.token }
+                            ${ process.env.FRONTEND_URL }/auth/olvide-password/${ data.token }
                         </p>
                         <p style="color: #333; font-size: 16px; margin-top: 30px;">Si tú no solicitaste restablecer tu contraseña, puedes simplemente ignorar este mensaje.</p>
                         <p style="color: #333; font-size: 16px;">El equipo de DevManager</p>

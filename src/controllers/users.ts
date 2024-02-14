@@ -98,7 +98,7 @@ export const login = async( req:Request, res: Response ) => {
 
         if( !user ){
             return res.status(404).json({
-                msg: 'Usuario no encontrado'
+                msg: 'Correo y/o Contraseña incorrectos'
             })
         }
 
@@ -112,7 +112,7 @@ export const login = async( req:Request, res: Response ) => {
 
         if( !isValidPassword ){
             return res.status(403).json({
-                msg: 'Contraseña incorrecta'
+                msg: 'Correo y/o Contraseña incorrectos'
             })
         }
         

@@ -23,8 +23,6 @@ export const socketController = async(socket:Socket, io:Server) => {
     })
     
     socket.on('complete-task', ({ task })=>{
-        console.log(task);
-              
         socket.to(task.project).emit('complete-task-response', { task })    
     })
 }
