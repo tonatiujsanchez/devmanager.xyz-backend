@@ -42,7 +42,7 @@ export const checkAuth = async( req:Request, res:Response, next:NextFunction ) =
         
         if( !user.status ){
             return res.status(401).json({
-                msg: 'No autorizado - Usuario eliminado'
+                msg: 'No autorizado - Usuario no encontrado'
             })
         }
 

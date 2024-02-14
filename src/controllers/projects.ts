@@ -52,6 +52,7 @@ export const getProjects = async( req: Request, res: Response ) => {
                 Project.find(query)
                     .where('creator').equals(user)
                     .populate('collaborators', 'name email photo')
+                    .populate('creator', 'name email photo')
                     .skip(skip)
                     .limit(limit)
                     .sort({ createdAt: 'desc' })
@@ -121,6 +122,7 @@ export const getCollaborativeProjects = async( req: Request, res: Response ) => 
         const [ projects, total ] = await Promise.all([
                 Project.find(query)
                     .populate('collaborators', 'name email photo')
+                    .populate('creator', 'name email photo')
                     .skip(skip)
                     .limit(limit)
                     .sort({ createdAt: 'desc' })
@@ -180,7 +182,15 @@ export const newProject = async( req: Request, res: Response ) => {
 
         await project.save()
         
-        return res.status(201).json(project)
+        return res.status(201).json({
+            ...JSON.parse( JSON.stringify( project ) ),
+            creator: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                photo: user.photo,
+            }
+        })
     } catch (error) {
         
         console.log(error)
@@ -192,7 +202,7 @@ export const newProject = async( req: Request, res: Response ) => {
     
 }
 
-export const getProject = async( req: Request, res: Response ) => {
+export const getProject = async( req: Request, res: Response ) => {    
 
     const { user } = req as CustomRequest
     const { id } = req.params
@@ -201,6 +211,7 @@ export const getProject = async( req: Request, res: Response ) => {
 
         const project = await Project.findById(id)
             .populate('collaborators', 'name email photo')
+            .populate('creator', 'name email photo')
             .where('status').equals(true)
 
         if( !project ){
@@ -212,7 +223,8 @@ export const getProject = async( req: Request, res: Response ) => {
         // Comprobar que el colaborador no pertenezca al proyecto
         const findCollaborator = (project.collaborators as IUser[]).find( collaboratorDB => collaboratorDB._id?.toString() === user._id!.toString() )
 
-        if( !(user._id?.toString() === project.creator.toString()) && !findCollaborator ){
+        const creator = project.creator as IUser
+        if( !(user._id?.toString() === creator._id?.toString()) && !findCollaborator ){
             return res.status(401).json({
                 msg: 'Proyecto no encontrado'
             })
@@ -240,6 +252,8 @@ export const editProject = async( req: Request, res: Response ) => {
     try {
 
         const project = await Project.findById(id)
+            .populate('collaborators', 'name email photo')
+            .populate('creator', 'name email photo')
             .where('status').equals(true)
 
         if( !project ){
@@ -248,7 +262,8 @@ export const editProject = async( req: Request, res: Response ) => {
             })
         }
 
-        if( !(user._id?.toString() === project.creator.toString()) ){
+        const creator = project.creator as IUser
+        if( !(user._id?.toString() === creator._id?.toString()) ){
             return res.status(401).json({
                 msg: 'Proyecto no encontrado'
             })
